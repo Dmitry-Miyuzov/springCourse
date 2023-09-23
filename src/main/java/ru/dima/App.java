@@ -24,6 +24,11 @@ public class App {
             3. Бины с типом синглтон создаются после инициализации контейнера.
             Важно. Если мы создадим еще 1 контейнер - то объекты будут разные.
             Пример ниже.
+
+            Важно.
+            Бинам с типом синглтон мы можем поменять стратегию инициализации.
+            Указав аннотацию Lazy (ленивый) - бин инициализируются только при первом его запросе, а не после иниц.
+            контейнера.
          */
 
         ApplicationContext contextJavaConfigSecond = new AnnotationConfigApplicationContext("ru.dima");
@@ -32,9 +37,5 @@ public class App {
         Cat beanThird = contextJavaConfigSecond.getBean(Cat.class);
 
         System.out.println(beanFirst == beanThird); //false
-
-
     }
-
-
 }
