@@ -15,19 +15,23 @@
    		http://www.springframework.org/schema/aop/spring-aop.xsd
         "
 >
-    <import resource="classpath:shape/circle/circleContext.xml"/>
-    <import resource="classpath:shape/point/pointContext.xml"/>
+    <import resource="classpath:coords/coordsContext.xml"/>
 
-    <util:list id="listShapes" value-type="ru.dima.beans.shape._base.Shape">
-        <ref bean="circleBlack"/>
-        <ref bean="circleYellow"/>
-        <ref bean="point"/>
-    </util:list>
-
-    <bean id="scene"
-          class="ru.dima.beans.Scene"
-          factory-method="getInstance">
-        <constructor-arg name="objects" ref="listShapes"/>
+    <bean id="circleBlack"
+          class="ru.dima.beans.shape.concrete.Circle">
+        <constructor-arg name="coords" ref="coords"/>
+        <constructor-arg name="color" value="Черный"/>
+        <constructor-arg name="radius" value="10"/>
+        <property name="coords.x" value="2"/>
+        <property name="coords.y" value="2"/>
+    </bean>
+    <bean id="circleYellow"
+          class="ru.dima.beans.shape.concrete.Circle">
+        <constructor-arg name="coords" ref="coords"/>
+        <constructor-arg name="color" value="Желтый"/>
+        <constructor-arg name="radius" value="15"/>
+        <property name="coords.x" value="1"/>
+        <property name="coords.y" value="1"/>
     </bean>
 
 </beans>
