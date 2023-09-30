@@ -1,13 +1,12 @@
 package ru.dima.beans.shape.concrete;
 
-import org.springframework.stereotype.Component;
 import ru.dima.beans.shape._base.Coords;
 import ru.dima.beans.shape._base.Shape;
+import ru.dima.beans.shape.utils.Color;
 
-@Component
 public class Point extends Shape {
 
-    public Point(Coords coords, String color) {
+    public Point(Coords coords, Color color) {
         super(coords, color);
     }
 

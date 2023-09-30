@@ -1,8 +1,5 @@
 package ru.dima.beans.shape._base;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class Coords {
     private Double x;
     private Double y;

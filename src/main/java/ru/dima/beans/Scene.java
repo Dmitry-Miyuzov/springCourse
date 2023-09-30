@@ -1,17 +1,16 @@
 package ru.dima.beans;
 
-import org.springframework.stereotype.Component;
 import ru.dima.beans.shape._base.Shape;
 
 import java.util.List;
 
-@Component
 public class Scene {
     private static Scene scene;
 
     private final List<Shape> objects;
 
     private Scene(List<Shape> objects) {
+        System.out.println("Создан бин сцены");
         this.objects = objects;
     }
 

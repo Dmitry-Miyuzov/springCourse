@@ -1,10 +1,12 @@
 package ru.dima.beans.shape._base;
 
+import ru.dima.beans.shape.utils.Color;
+
 public abstract class Shape {
     protected Coords coords;
-    protected String color;
+    protected Color color;
 
-    public Shape(Coords coords, String color) {
+    public Shape(Coords coords, Color color) {
         this.coords = coords;
         this.color = color;
     }
@@ -19,11 +21,11 @@ public abstract class Shape {
         this.coords = coords;
     }
 
-    public String getColor() {
+    public Color getColor() {
         return color;
     }
 
-    public void setColor(String color) {
+    public void setColor(Color color) {
         this.color = color;
     }
 
