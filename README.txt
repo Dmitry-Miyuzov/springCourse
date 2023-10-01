@@ -8,3 +8,5 @@ File -> Settings -> Editor -> File Encodings -> Default Encodings For Properties
 Не запускалось приложение с версией спринг контекст 5. что то там.
 Решение:
 Я использовую JDK 17, нужно погуглить - spring jdk support.
+
+Для запуска необходимы прописать env переменны - db.user, db.password.
