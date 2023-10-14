@@ -16,6 +16,8 @@ public class App {
 
         dao.findByTitle("title")
                 .forEach(System.out::println);
+        dao.findCustomByIdForExampleNative(entity.getId());
+        dao.findCustomByIdForExampleJPQL(entity.getId());
 
         dao.deleteAllByTitle("title");
     }
