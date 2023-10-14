@@ -9,31 +9,23 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import ru.dima.dao.courseDao.CourseDao;
-import ru.dima.dao.courseDao.concrete.JdbcCourseDao;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
 @Configuration
+@EnableTransactionManagement
+@EnableJpaRepositories(basePackages = "ru.dima.dao")
 @PropertySource("classpath:db/connectionSettings.properties")
 public class JavaConfig implements ApplicationContextAware {
     private ApplicationContext applicationContext;
 
-    @Bean("springDataSource")
-    @Scope("singleton")
-    public DataSource springDataSource(
-            @Value("${db.url}") String url,
-            @Value("${db.user}") String user,
-            @Value("${db.password}") String password,
-            @Value("${db.driverClassName}") String driverClassName
-    ) {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource(url, user, password);
-        dataSource.setDriverClassName(driverClassName);
-        return dataSource;
-    }
 
+    //Источник данных
     @Bean("poolConnectionDataSource")
     @Scope("singleton")
     public DataSource poolConnectionDataSource(
@@ -50,20 +42,31 @@ public class JavaConfig implements ApplicationContextAware {
         return dataSource;
     }
 
-    @Bean("jdbcTemplate")
+    /*
+    1. Создание фабрики entity manager-ов, на основе источника данных.
+    2. Указание JPA Вендора.
+    3. Где будем сканировать
+     */
+    @Bean("entityManagerFactory")
     @Scope("singleton")
-    public JdbcTemplate jdbcTemplate() {
-        //todo либо springDataSource, либо poolConnectionDataSource - сделал для примера
-        var dataSource = applicationContext.getBean("poolConnectionDataSource", DataSource.class);
-        return new JdbcTemplate(dataSource);
+    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
+        DataSource dataSource = applicationContext.getBean("poolConnectionDataSource", DataSource.class);
+
+        LocalContainerEntityManagerFactoryBean manager = new LocalContainerEntityManagerFactoryBean();
+        manager.setDataSource(dataSource);
+        manager.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        manager.setPackagesToScan("ru.dima.dao");
+        return manager;
     }
 
-    @Bean("jdbcCourseDao")
+    @Bean("transactionManager")
     @Scope("singleton")
-    public CourseDao jdbcCourseDao() {
-        var jdbcTemplate = applicationContext.getBean("jdbcTemplate", JdbcTemplate.class);
-        return new JdbcCourseDao(jdbcTemplate);
+    public JpaTransactionManager transactionManager() {
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(entityManagerFactoryBean().getObject());
+        return transactionManager;
     }
+
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
