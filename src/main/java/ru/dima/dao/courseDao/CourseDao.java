@@ -15,6 +15,6 @@ public interface CourseDao extends CrudRepository<CourseEntity, Integer>, Course
         @Query(value = "select * from courses where id = :id", nativeQuery = true)
         CourseEntity findCustomByIdForExampleNative(@Param("id") Integer id); // кастомный с аннотацией нативный
         @Query(value = "select c from CourseEntity  c where c.id = :id")
-        CourseEntity findCustomByIdForExampleJPQL(@Param("id") Integer id); // кастомный с аннотацией нативный
+        CourseEntity findCustomByIdForExampleJPQL(@Param("id") Integer id); // кастомный с аннотацией не нативный
 
 }
